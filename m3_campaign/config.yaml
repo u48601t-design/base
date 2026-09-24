@@ -1,0 +1,66 @@
+# m3.com 自動エントリー設定
+#
+# m3.com のページ構成が変わったときは、ここを書き換えれば対応できるようにしてあります。
+# ボタンは「表示されている文言」で探します（部分一致）。
+
+login:
+  url: https://www.m3.com/login
+  # 上から順に試し、最初に見つかった入力欄を使います
+  id_selectors:
+    - 'input[name="loginId"]'
+    - 'input[name="login_id"]'
+    - 'input[type="email"]'
+    - 'input[type="text"]'
+  password_selectors:
+    - 'input[type="password"]'
+  # ログインページではなくトップが表示された場合に押すリンク
+  open_form_texts:
+    - ログイン
+
+# ログインボーナス: ログイン後に開くページと、押すボタンの文言
+login_bonus:
+  urls:
+    - https://www.m3.com/
+  button_texts:
+    - ポイントを受け取る
+    - ポイントを獲得
+    - ボーナスを受け取る
+
+# エントリー型キャンペーン
+campaigns:
+  # 毎回開くキャンペーンページ（superm3の日の特設ページなど、分かっているURLを追加してください）
+  urls: []
+  # 一覧ページからキャンペーンページへのリンクを自動で集める
+  discover:
+    - page: https://www.m3.com/
+      # href がこの正規表現にマッチするリンクを対象にする
+      link_pattern: '(campaign|superm3|entry)'
+      max_links: 20
+  button_texts:
+    - エントリーする
+    - エントリー
+    - 応募する
+    - 参加する
+    - 抽選に参加
+  # 文言にこれらを含むボタンは押さない（視聴・回答が必要なもの、登録済みのものなど）
+  exclude_texts:
+    - エントリー済
+    - 応募済
+    - 参加済
+    - 視聴
+    - 回答
+    - アンケート
+    - 解除
+    - キャンセル
+  # 押した後にこれらの文言が出たら「エントリー済み」とみなす
+  done_texts:
+    - エントリー済
+    - 応募済
+    - 参加済
+    - エントリーが完了
+    - 応募が完了
+  max_clicks_per_page: 5
+
+# 1操作ごとの待ち時間（ミリ秒）。サーバーに負荷をかけないよう少し空けます
+wait_ms: 1500
+timeout_ms: 30000
